@@ -1,3 +1,5 @@
+package entity;
+
 import jakarta.persistence.*;
 
 import java.io.Serializable;
@@ -16,14 +18,12 @@ public class Personnel implements Serializable {
     public Personnel() {
     }
 
-    public Personnel( String nationalCode, String firstName, String lastName, String cityName) {
-
-        this.nationalCode = nationalCode;
+    public Personnel(String nationalCode, String firstName, String lastName, String cityName) {
+        setNationalCode(nationalCode);
         this.firstName = firstName;
         this.lastName = lastName;
         this.cityName = cityName;
     }
-
     @Column(name ="NATIONALCODE")
     public String getNationalCode() {
         return nationalCode;
@@ -93,8 +93,6 @@ public class Personnel implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id,nationalCode, firstName, lastName, cityName);
+        return Objects.hash(id, nationalCode, firstName, lastName, cityName);
     }
-
-
 }
