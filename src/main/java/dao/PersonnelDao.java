@@ -7,9 +7,10 @@ import jakarta.persistence.Persistence;
 import java.util.Set;
 
 public class PersonnelDao {
+    static EntityManagerFactory emf= Persistence.createEntityManagerFactory("my-persistence-unit");
+    static EntityManager em= emf.createEntityManager();
     public Personnel get(Long id) {
-        EntityManagerFactory emf= Persistence.createEntityManagerFactory("my-persistence-unit");
-        EntityManager em= emf.createEntityManager();
+
         Personnel p=null;
         try{
             em.getTransaction().begin();
@@ -32,8 +33,6 @@ public class PersonnelDao {
 
     public void save(Personnel p) {
 
-        EntityManagerFactory emf= Persistence.createEntityManagerFactory("my-persistence-unit");
-        EntityManager em= emf.createEntityManager();
         try{
             em.getTransaction().begin();
             em.persist(p);
@@ -53,8 +52,6 @@ public class PersonnelDao {
 
 
     public void update(Long id,String fn,String ln) {
-        EntityManagerFactory emf= Persistence.createEntityManagerFactory("my-persistence-unit");
-        EntityManager em= emf.createEntityManager();
         try{
             em.getTransaction().begin();
             Personnel p=em.find(Personnel.class,id);
@@ -89,8 +86,6 @@ public class PersonnelDao {
 
 
     public void delete(Long id) {
-        EntityManagerFactory emf= Persistence.createEntityManagerFactory("my-persistence-unit");
-        EntityManager em= emf.createEntityManager();
         try{
             em.getTransaction().begin();
             Personnel p=em.find(Personnel.class,id);
