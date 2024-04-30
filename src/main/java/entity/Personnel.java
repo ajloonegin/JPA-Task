@@ -4,8 +4,11 @@ import jakarta.persistence.*;
 
 import java.io.Serializable;
 import java.util.Objects;
+import java.util.Set;
+
+
 @Entity
-@Table (name = "PERSONNELTABLE")
+@Table(name = "PERSONNELTABLE")
 public class Personnel implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -14,6 +17,9 @@ public class Personnel implements Serializable {
     private String firstName;
     private String lastName;
     private String cityName;
+
+    @OneToMany(mappedBy = "personnel")
+    private Set<Vacation> vacations;
 
     public Personnel() {
     }
@@ -24,25 +30,26 @@ public class Personnel implements Serializable {
         this.lastName = lastName;
         this.cityName = cityName;
     }
-    @Column(name ="NATIONALCODE")
+
+    @Column(name = "NATIONALCODE")
     public String getNationalCode() {
         return nationalCode;
     }
 
     public void setNationalCode(String nationalCode) {
-        if(nationalCode.length()<=10){
+        if (nationalCode.length() <= 10) {
             this.nationalCode = nationalCode;
         } else {
             System.out.println("invalid national code");
 
         }
-
-
     }
+
     @Column(name = "FIRSTNAME")
     public String getFirstName() {
         return firstName;
     }
+
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
@@ -55,6 +62,7 @@ public class Personnel implements Serializable {
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
+
     @Column(name = "CITYNAME")
     public String getCityName() {
         return cityName;

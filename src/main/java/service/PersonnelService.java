@@ -1,23 +1,16 @@
 package service;
 
 import dao.PersonnelDao;
+import dao.VacationDao;
 import entity.Personnel;
 
-import java.util.Set;
-
 public class PersonnelService {
-    static PersonnelDao personnelDao = new PersonnelDao();
-    //canedit
-    //cansave
-    //validation
-    //nationalcode format checker
-    //canread-is a personnel?
+    PersonnelDao personnelDao = new PersonnelDao();
 
 
-    //add personnel to storage
-    public static boolean addPersonnel(Personnel p) {
+    public boolean addPersonnel(Personnel p) {
         try {
-            personnelDao.save(p);
+            personnelDao.insert(p);
             return true;
         } catch (Exception e) {
 
@@ -26,43 +19,41 @@ public class PersonnelService {
         }
     }
 
-
-    //search personnel of storage
-    public static Personnel searchPersonnel(Long id) {
-        return personnelDao.get(id);
+    public Personnel findPersonnel(Long id) {
+        return personnelDao.findPersonnelById(id);
 
     }
 
-    public static void updatePersonnel(Long id, String fn, String ln) {
+    public void updatePersonnel(Long id, String fn, String ln, String cn) {
+        Personnel p = findPersonnel(id);
 
-        personnelDao.update(id, fn, ln);
-
-    }
-
-    public static void deletePersonnel(Long id) {
-
-
-        personnelDao.delete(id);
+        personnelDao.update(buildPersonnel(p, fn, ln, cn));
 
     }
 
-    public static Personnel getPersonnel(Long id) {
-        Personnel pers = personnelDao.get(id);
+    public Personnel buildPersonnel(Personnel personnel, String fn, String ln, String cn) {
+        System.out.println("Before Updation");
+        System.out.println("personnel FirstName = " + personnel.getFirstName());
+        System.out.println("personnel LastName = " + personnel.getLastName());
+        System.out.println("personnel CityName = " + personnel.getCityName());
+        personnel.setFirstName(fn);
+        personnel.setLastName(ln);
+        personnel.setCityName(cn);
+        System.out.println("After Updation");
+        System.out.println("personnel FirstName = " + personnel.getFirstName());
+        System.out.println("personnel LastName = " + personnel.getLastName());
+        System.out.println("personnel CityName = " + personnel.getCityName());
+        return personnel;
 
-        return pers;
     }
 
+    public void deletePersonnel(Long id) {
 
-    public static boolean validateAddPersonnel(Personnel p) {
-        if (p == null) {
-            System.out.println("p is null!");
-            return false;
-        }
-        return true;
+        personnelDao.deleteById(id);
 
     }
 
-    public static boolean validateNationalCode(String nc) {
+    public boolean validateNationalCode(String nc) {
 
         int check = Character.getNumericValue(nc.charAt(9));
         int sum = 0;
@@ -84,7 +75,7 @@ public class PersonnelService {
 
     }
 
-    public static boolean runProgram(Boolean ans) {
+    public boolean runProgram(Boolean ans) {
 
         if (ans.equals(true)) {
             return true;

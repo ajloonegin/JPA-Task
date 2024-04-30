@@ -1,213 +1,186 @@
 import entity.Personnel;
-//import entity.Vacation;
+import entity.Vacation;
 import service.PersonnelService;
-//import service.VacationService;
+import service.VacationService;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Scanner;
-import java.util.Set;
 
 public class View {
     public static void main(String[] args) {
-
         boolean isNewOp;
+        Scanner sc = new Scanner(System.in);
+        PersonnelService personnelService = new PersonnelService();
+        VacationService vacationService = new VacationService();
 
         do {
-
             System.out.println("pls Select operation:");
-            //add personnel to db
             System.out.println("1: Insert personnel");
-            //read personnel
             System.out.println("2: Find personnel");
-            //add vaation to db
-//            System.out.println("3: Entry vacation for a personnel");
-            //read vaction
-//            System.out.println("4: Show vacation of personnel");
-            //update personnel list
+            System.out.println("3: Insert vacation of personnel");
+            System.out.println("4: Find vacation of personnel");
             System.out.println("5: Update personnel");
-//            System.out.println("6: Update a record of vacation table");
+            System.out.println("6: Update vacation of personnel");
             System.out.println("7: Delete Personnel");
-//            System.out.println("8 :delete entity of vacations");
+            System.out.println("8 :delete vacation of personnel");
             System.out.println("9: Exit");
-            Scanner scanner = new Scanner(System.in);
-            int input = scanner.nextInt();
-            switch (input) {
+
+            int inputOp = sc.nextInt();
+
+            switch (inputOp) {
                 case 1:
                     System.out.println("Enter national code");
-                    Scanner s1 = new Scanner(System.in);
-                    String nc = s1.nextLine();
-                    if(PersonnelService.validateNationalCode(nc)){
+                    Scanner scc = new Scanner(System.in);
+                    String ncNextLineOp1 = scc.nextLine();
+
+                    if (personnelService.validateNationalCode(ncNextLineOp1)) {
+
                         System.out.println("Enter first name");
-                        Scanner s2 = new Scanner(System.in);
-                        String fn = s2.nextLine();
+                        Scanner sc1 = new Scanner(System.in);
+                        String fnNextLineOp1 = sc1.nextLine();
+
                         System.out.println("Enter last name");
-                        Scanner s3 = new Scanner(System.in);
-                        String ln = s3.nextLine();
+                        Scanner sc2 = new Scanner(System.in);
+                        String lnNextLineOp1 = sc2.nextLine();
+
                         System.out.println("Enter city name");
-                        Scanner s4 = new Scanner(System.in);
-                        String cn = s4.nextLine();
-                        Personnel p12=new Personnel(nc, fn, ln, cn);
+                        Scanner sc3 = new Scanner(System.in);
+                        String cnNextLineOP1 = sc3.nextLine();
 
-                        PersonnelService.addPersonnel(p12);
-                        System.out.println("Pesrsonnel added");
-
+                        Personnel personnel = new Personnel(ncNextLineOp1, fnNextLineOp1, lnNextLineOp1, cnNextLineOP1);
+                        personnelService.addPersonnel(personnel);
+                        System.out.println("Personnel added");
 
                     }
                     break;
                 case 2:
                     System.out.println("Enter id number of personnel");
-                    Scanner s5 = new Scanner(System.in);
-                    Long inputId = s5.nextLong();
+                    Scanner sc4 = new Scanner(System.in);
+                    Long idNextLineOp2 = sc4.nextLong();
 
-                    Personnel pf=PersonnelService.searchPersonnel(inputId);
-                    System.out.println(pf);
-
+                    Personnel personnel = personnelService.findPersonnel(idNextLineOp2);
+                    System.out.println(personnel);
                     break;
-//                case 3:
-//                    System.out.println("enter national code of personnel");
-//                    Scanner s6 = new Scanner(System.in);
-//                    String nc6 = s6.nextLine();
-//                    if(PersonnelService.validateNationalCode(nc6)){
-//                        System.out.println("enter date of vacation with yyyy-MM-dd format");
-//                        Scanner s7 = new Scanner(System.in);
-//                        String dateStr = s7.next();
-//                        SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
-//                        Date date;
-//                        try {
-//                            date = sdf1.parse(dateStr);
-//                        } catch (ParseException e) {
-//                            throw new RuntimeException(e);
-//                        }
-//                        Vacation vv=new Vacation(nc6,date);
-//                        if(VacationService.validateAddVacation(vv)){
-//                            VacationService.addVacation(vv);
-//                        }
-//
-//                    }
-//                    break;
-//                case 4:
-//                    System.out.println("insert national code of personnel:");
-//                    Scanner s8 = new Scanner(System.in);
-//                    String nc8 = s8.nextLine();
-//                    if(PersonnelService.validateNationalCode(nc8)){
-//                        Set<Vacation> res=VacationService.showVacations(nc8);
-//                        System.out.println(res);
-//                    }
-//
-//                    break;
+                case 3:
+                    System.out.println("enter id number of personnel");
+                    Scanner sc5 = new Scanner(System.in);
+                    Long idNextLineOp3 = sc5.nextLong();
+
+                    System.out.println("enter date of vacation with yyyy-MM-dd format");
+                    Scanner sc6 = new Scanner(System.in);
+                    String dateNextLineOp3 = sc6.next();
+                    SimpleDateFormat sdfOp3 = new SimpleDateFormat("yyyy-MM-dd");
+                    Date dateParseOp3;
+                    try {
+                        dateParseOp3 = sdfOp3.parse(dateNextLineOp3);
+                    } catch (ParseException e) {
+                        throw new RuntimeException(e);
+                    }
+                    Personnel p = personnelService.findPersonnel(idNextLineOp3);
+                    Vacation v = new Vacation(p, dateParseOp3);
+                    vacationService.addVacation(v);
+                    break;
+                case 4:
+                    System.out.println("insert national code of personnel:");
+                    Scanner sc7 = new Scanner(System.in);
+                    String ncNextLineOp4 = sc7.nextLine();
+
+                    if (personnelService.validateNationalCode(ncNextLineOp4)) {
+                        List<Vacation> resultOp4 = vacationService.showVacations(ncNextLineOp4);
+                        System.out.println(resultOp4);
+                    }
+                    break;
                 case 5:
                     System.out.println("Enter id number of personnel");
-                    Scanner s11 = new Scanner(System.in);
-                    Long inputId1 = s11.nextLong();
+                    Scanner sc8 = new Scanner(System.in);
+                    Long idNextLineOp5 = sc8.nextLong();
+
                     System.out.println("Enter new firstName");
-                    Scanner s111 = new Scanner(System.in);
-                    String in2 = s111.nextLine();
+                    Scanner sc9 = new Scanner(System.in);
+                    String fnNextLineOp5 = sc9.nextLine();
+
                     System.out.println("Enter new lastName");
-                    Scanner s12 = new Scanner(System.in);
-                    String in3 = s12.nextLine();
-                    PersonnelService.updatePersonnel(inputId1,in2,in3);
+                    Scanner sc10 = new Scanner(System.in);
+                    String lnNextLineOp5 = sc10.nextLine();
+
+                    System.out.println("Enter new cityName");
+                    Scanner sc100 = new Scanner(System.in);
+                    String cnNextLineOp5 = sc100.nextLine();
+
+                    personnelService.updatePersonnel(idNextLineOp5, fnNextLineOp5, lnNextLineOp5, cnNextLineOp5);
                     break;
-//                case 6:
-//                    System.out.println("Insert national code of vacation:");
-//                    Scanner s14 = new Scanner(System.in);
-//                    String nc14 = s14.nextLine();
-//                    if(PersonnelService.validateNationalCode(nc14)) {
-//                        System.out.println("Enter new National code");
-//                        Scanner s15 = new Scanner(System.in);
-//                        String in15 = s15.nextLine();
-//                        if (PersonnelService.validateNationalCode(in15)) {
-//                            System.out.println("Enter old Date");
-//                            Scanner s16 = new Scanner(System.in);
-//                            String dateStrin = s16.nextLine();
-//
-//                            SimpleDateFormat sdf12 = new SimpleDateFormat("yyyy-MM-dd");
-//                            Date datee1;
-//                            try {
-//                                datee1 = sdf12.parse(dateStrin);
-//                            } catch (ParseException e) {
-//                                throw new RuntimeException(e);
-//                            }
-//                            System.out.println("Enter new Date");
-//                            Scanner s26 = new Scanner(System.in);
-//                            String dateStri = s26.nextLine();
-//                            SimpleDateFormat sdf11 = new SimpleDateFormat("yyyy-MM-dd");
-//                            Date datee2;
-//                            try {
-//                                datee2 = sdf11.parse(dateStri);
-//                            } catch (ParseException e) {
-//                                throw new RuntimeException(e);
-//                            }
-//                            Set<Vacation> vu = VacationService.getVacations(nc14);
-//                            for (Vacation v : vu) {
-//                                System.out.println(v.getDate());
-//                                System.out.println(datee1);
-//                                if (v.getDate().equals(datee1)) {
-//                                    VacationService.updateVacation(v, in15, datee2,datee1);
-//
-//                                }else{
-//                                    System.out.println("nashod");
-//                                }
-//                            }
-//
-//                        }
-//                    }
-//                    break;
+                case 6:
+                    System.out.println("enter id number of personnel:");
+                    Scanner sc11 = new Scanner(System.in);
+                    Long idNextLineOp6 = sc11.nextLong();
+
+                    System.out.println("Enter old Date");
+                    Scanner sc12 = new Scanner(System.in);
+                    String oldDateNextLineOp6 = sc12.nextLine();
+
+                    SimpleDateFormat oldSdfOp6 = new SimpleDateFormat("yyyy-MM-dd");
+                    Date oldDateParseOp6;
+                    try {
+                        oldDateParseOp6 = oldSdfOp6.parse(oldDateNextLineOp6);
+                    } catch (ParseException e) {
+                        throw new RuntimeException(e);
+                    }
+
+                    System.out.println("Enter new Date");
+                    Scanner sc13 = new Scanner(System.in);
+                    String newDateNextLineOp6 = sc13.nextLine();
+                    SimpleDateFormat newSdfOp6 = new SimpleDateFormat("yyyy-MM-dd");
+                    Date newDateParseOp6;
+                    try {
+                        newDateParseOp6 = newSdfOp6.parse(newDateNextLineOp6);
+                    } catch (ParseException e) {
+                        throw new RuntimeException(e);
+                    }
+                    vacationService.updateVacation(idNextLineOp6, oldDateParseOp6, newDateParseOp6);
+                    break;
                 case 7:
                     System.out.println("Insert id number of personnel:");
-                    Scanner s17 = new Scanner(System.in);
-                    Long inputId3 = s17.nextLong();
+                    Scanner sc14 = new Scanner(System.in);
+                    Long idNextLineOp7 = sc14.nextLong();
 
-                    PersonnelService.deletePersonnel(inputId3);
-
-
+                    personnelService.deletePersonnel(idNextLineOp7);
                     break;
-//                case 8:
-//                    System.out.println("Insert national code of Vacation:");
-//                    Scanner s18 = new Scanner(System.in);
-//                    String nc18 = s18.nextLine();
-//                    System.out.println("Enter Date of vacation");
-//                    Scanner s27 = new Scanner(System.in);
-//                    String dateString = s27.next();
-//                    SimpleDateFormat sdf13 = new SimpleDateFormat("yyyy-MM-dd");
-//                    Date datee3;
-//                    try {
-//
-//                        datee3 = sdf13.parse(dateString);
-//                    } catch (ParseException e) {
-//                        throw new RuntimeException(e);
-//                    }
-//                    if(PersonnelService.validateNationalCode(nc18)){
-//                        Set<Vacation> vd= VacationService.getVacations(nc18);
-//                        for (Vacation v : vd) {
-//                            if (v.getDate().equals(datee3)) {
-//                                VacationService.deleteVacation(v,datee3);
-//
-//                            }
-//                            else {
-//                                System.out.println("this record doesn't exist");
-//                            }
-//                        }
-//
-//
-//                    }
-//                    break;
+                case 8:
+                    System.out.println("enter id number of Vacation:");
+                    Scanner sc15 = new Scanner(System.in);
+                    Long idNextLineOp8 = sc15.nextLong();
+
+                    System.out.println("Enter Date of vacation");
+                    Scanner sc16 = new Scanner(System.in);
+                    String dateNextLineOp8 = sc16.next();
+
+                    SimpleDateFormat sdfOp8 = new SimpleDateFormat("yyyy-MM-dd");
+                    Date DateParseOp8;
+                    try {
+
+                        DateParseOp8 = sdfOp8.parse(dateNextLineOp8);
+                    } catch (ParseException e) {
+                        throw new RuntimeException(e);
+                    }
+
+                    vacationService.deleteVacation(idNextLineOp8, DateParseOp8);
+                    break;
                 case 9:
-                    isNewOp=false;
                     break;
                 default:
                     System.out.println("invalid number");
 
             }
-
             System.out.println("run program again?(true/false):");
-            Scanner w=new Scanner(System.in);
-            Boolean answer=w.nextBoolean();
-            isNewOp=PersonnelService.runProgram(answer);
+            Scanner sc17 = new Scanner(System.in);
+            Boolean answer = sc17.nextBoolean();
+            isNewOp = personnelService.runProgram(answer);
 
 
-        } while (isNewOp == true);
+        } while (isNewOp);
 
 
     }
